@@ -26,6 +26,9 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #include <SPI.h>
 #include <SD.h>
 
+#define MAX(a, b) ((a > b) ? a : b)
+#define MIN(a, b) ((a < b) ? a : b)
+
 // Below configuration can be adjusted according to wiring
 // Note that LCD_BL pin on Arduino must be capable of generating PWM output
 #define LCD_CS 10
@@ -38,6 +41,10 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 // Dimensions of LCD panel in pixels
 #define LONG_SIDE 480
 #define SHORT_SIDE 320
+
+#define COLOR uint16_t
+#define BLACK 0x000000
+#define WHITE 0xFFFFFF
 
 class ILI9486 {
 public:
@@ -57,6 +64,12 @@ public:
 	ILI9486(Orientation orientation);
 
 	void setBacklight(uint8_t value); // Set LCD backlight value, from 0(min) to 255(max)
+	void fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color); // Fill area with given color
+	void clear(COLOR color); // Fill entire screen with given color
+	void openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd); // Set display area
+	void setCursor(uint16_t x, uint16_t y); // Set cursor to given position
+	void writeColor(COLOR color, uint32_t n); // Write given colors n times
+
 private:
 	void reset(); // Hardware reset
 	void initializeRegisters(); // Write inital values to registers

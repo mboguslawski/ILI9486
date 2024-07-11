@@ -31,7 +31,10 @@ ILI9486::ILI9486(Orientation orientation) {
 	pinMode(SD_CS, OUTPUT);
 
 	// Is safe to call as SPI library has protection for calling begin() method multiple times
-	SPI.begin();
+	SPI.setDataMode(SPI_MODE0);
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    SPI.begin();
 
 	// Initialize SD card
 	digitalWrite(SD_CS, 1);
@@ -45,6 +48,11 @@ ILI9486::ILI9486(Orientation orientation) {
 	// (LCD turned off)
 	this->setBacklight(0);
 
+    this->initializeRegisters();
+
+    this->setScanOrder(orientation);
+    delay(200);
+
     this->writeRegister(0x11);
     delay(120);
 
@@ -57,25 +65,70 @@ void ILI9486::setBacklight(uint8_t value) {
 	analogWrite(LCD_BL, this->backlight);
 }
 
+void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color) {
+    uint32_t size = (uint32_t)(xEnd - xStart) * (uint32_t)(yEnd - yStart);
+
+    this->openWindow(xStart, yStart, xEnd, yEnd);
+    this->writeColor(color, size);
+}
+
+void ILI9486::clear(COLOR color) {
+    fill(0, 0, this->width, this->height, color);
+}
+
+void ILI9486::openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd) {
+    // Set the X coordinates
+    this->writeRegister(0x2A);
+    this->writeData(xStart >> 8); // Set the horizontal starting point to the high octet
+    this->writeData(xStart & 0xff);	// Set the horizontal starting point to the low octet
+    this->writeData((xEnd - 1) >> 8); // Set the horizontal end to the high octet
+    this->writeData((xEnd - 1) & 0xff); // Set the horizontal end to the low octet
+
+    // Set the Y coordinates
+    this->writeRegister(0x2B);
+    this->writeData(yStart >> 8);
+    this->writeData(yStart & 0xff );
+    this->writeData((yEnd - 1) >> 8);
+    this->writeData((yEnd - 1) & 0xff);
+    
+    this->writeRegister(0x2C);
+}
+
+void ILI9486::setCursor(uint16_t x, uint16_t y) {
+    this->openWindow(x, y, x, y);
+}
+
+void ILI9486::writeColor(COLOR color, uint32_t n) {
+    digitalWrite(LCD_DC, 1);
+    digitalWrite(LCD_CS, 0);
+
+    for (uint32_t i = 0; i < n; i++) {
+        SPI.transfer(color >> 8);
+        SPI.transfer(color & 0xFF);
+    }
+
+    digitalWrite(LCD_CS, 1);
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
     this->writeData(0x00);
     this->writeData(0x08);
 
     this->writeRegister(0xC0);
-    this->writeData(0x19);// VREG1OUT POSITIVE
-    this->writeData(0x1a);// VREG2OUT NEGATIVE
+    this->writeData(0x19); // VREG1OUT POSITIVE
+    this->writeData(0x1a); // VREG2OUT NEGATIVE
 
     this->writeRegister(0xC1);
-    this->writeData(0x45);// VGH,VGL    VGH>=14V.
+    this->writeData(0x45); // VGH,VGL    VGH>=14V.
     this->writeData(0x00);
 
-    this->writeRegister(0xC2);	// Normal mode, increase can change the display quality, while increasing power consumption
-    this->writeData(0xA0);
+    this->writeRegister(0xC2); // Normal mode, increase can change the display quality, while increasing power consumption
+    this->writeData(0x33);
 
     this->writeRegister(0XC5);
     this->writeData(0x00);
-    this->writeData(0x28);// VCM_REG[7:0]. <=0X80.
+    this->writeData(0x28); // VCM_REG[7:0]. <=0X80.
 
     this->writeRegister(0xB1);// Sets the frame frequency of full color normal mode
     this->writeData(0x60); // Modifing this value can solve flickering strips problem 
@@ -86,7 +139,7 @@ void ILI9486::initializeRegisters() {
 
     this->writeRegister(0xB6);//
     this->writeData(0x00);
-    this->writeData(0x42);//0 GS SS SM ISC[3:0];
+    this->writeData(0x42); //0 GS SS SM ISC[3:0];
     this->writeData(0x3B);
 
     this->writeRegister(0xB7);
@@ -175,7 +228,7 @@ void ILI9486::writeRegister(uint8_t reg) {
 	digitalWrite(LCD_DC, 0);
     digitalWrite(LCD_CS, 0);
     SPI.transfer(reg);
-    digitalWrite(LCD_DC, 1);
+    digitalWrite(LCD_CS, 1);
 }
 
 void ILI9486::writeData(uint8_t data) {
@@ -237,7 +290,7 @@ void ILI9486::setScanOrder(Orientation orientation) {
 
     // Set the read / write scan direction of the frame memory
     this->writeRegister(0xB6);
-    this->writeData(0X00);
+    this->writeData(0x00);
     this->writeData(DisFunReg_Data);
 
     this->writeRegister(0x36);
