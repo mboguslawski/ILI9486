@@ -26,9 +26,6 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #include <SPI.h>
 #include <SD.h>
 
-#define MAX(a, b) ((a > b) ? a : b)
-#define MIN(a, b) ((a < b) ? a : b)
-
 // Below configuration can be adjusted according to wiring
 // Note that LCD_BL pin on Arduino must be capable of generating PWM output
 #define LCD_CS 10
@@ -61,7 +58,7 @@ public:
 		D2U_R2L
 	};
 	
-	ILI9486(Orientation orientation);
+	ILI9486(Orientation orientation); // ILI9486 driver initialization, takes about 1 second to execute
 
 	void setBacklight(uint8_t value); // Set LCD backlight value, from 0(min) to 255(max)
 	void fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color); // Fill area with given color

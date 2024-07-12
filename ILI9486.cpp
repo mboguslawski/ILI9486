@@ -77,6 +77,18 @@ void ILI9486::clear(COLOR color) {
 }
 
 void ILI9486::openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd) {
+    // Ensure that coordinates are given in correct order
+    if (xStart > xEnd) {
+        uint16_t tmp = xStart;
+        xStart = xEnd;
+        xEnd = tmp;
+    }
+    if (yStart > yEnd) {
+        uint16_t tmp = yStart;
+        yStart = yEnd;
+        yEnd = tmp;
+    }
+
     // Set the X coordinates
     this->writeRegister(0x2A);
     this->writeData(xStart >> 8); // Set the horizontal starting point to the high octet
