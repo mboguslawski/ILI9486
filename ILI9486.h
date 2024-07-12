@@ -61,6 +61,10 @@ public:
 	ILI9486(Orientation orientation); // ILI9486 driver initialization, takes about 1 second to execute
 
 	void setBacklight(uint8_t value); // Set LCD backlight value, from 0(min) to 255(max)
+	void changeDefaultBacklight(uint8_t value); // Set LCD default backlight value, from 0(min) to 255(max), 255 after init
+	void setDefaultBacklight(); // Set LCD brightness to default value
+	void turnOffBacklight(); // Set LCD panel brightness to 0
+
 	void fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color); // Fill area with given color
 	void clear(COLOR color); // Fill entire screen with given color
 	void openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd); // Set display area
@@ -76,7 +80,7 @@ private:
 	void writeData(uint8_t data); // Write data to register
 	void setScanOrder(Orientation orientation); // Set order in which GRAM is scanned
 
-	uint8_t backlight; // LCD panel brightness, 0 for turned off, 255 for maximum brightness
+	uint8_t defaultBacklight; // LCD panel default brightness, 0 for turned off, 255 for maximum brightness
 	uint16_t width; // [px]
 	uint16_t height; // [px]
 };

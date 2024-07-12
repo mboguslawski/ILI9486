@@ -43,11 +43,8 @@ ILI9486::ILI9486(Orientation orientation) {
 	SD.begin(SD_CS);
 
 	this->reset();
-
-	// Set backlight to 0 
-	// (LCD turned off)
-	this->setBacklight(0);
-
+	this->turnOffBacklight();
+    this->defaultBacklight = UINT8_MAX; // Max brightness
     this->initializeRegisters();
 
     this->setScanOrder(orientation);
@@ -61,8 +58,19 @@ ILI9486::ILI9486(Orientation orientation) {
 }
 
 void ILI9486::setBacklight(uint8_t value) {
-	this->backlight = value;
-	analogWrite(LCD_BL, this->backlight);
+	analogWrite(LCD_BL, value);
+}
+
+void ILI9486::changeDefaultBacklight(uint8_t value) {
+    this->defaultBacklight = value;
+}
+
+void ILI9486::setDefaultBacklight() {
+    this->setBacklight(this->defaultBacklight);
+}
+
+void ILI9486::turnOffBacklight() {
+    this->setBacklight(0);
 }
 
 void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color) {
