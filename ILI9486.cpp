@@ -217,11 +217,11 @@ void ILI9486::initializeRegisters() {
 
 void ILI9486::reset() {
 	digitalWrite(LCD_RST, 1);
-    delay(500);
+    delay(100);
     digitalWrite(LCD_RST, 0);
-    delay(500);
+    delay(100);
     digitalWrite(LCD_RST, 1);
-    delay(500);
+    delay(100);
 }
 
 void ILI9486::writeRegister(uint8_t reg) {
