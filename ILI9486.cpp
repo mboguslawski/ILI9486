@@ -120,6 +120,11 @@ void ILI9486::writeBuffer(COLOR *buffer, uint32_t n) {
     digitalWrite(LCD_CS, 1);
 }
 
+void ILI9486::setPixel(uint16_t x, uint16_t y, COLOR color) {
+    this->setCursor(x, y);
+    this->writeColor(color, 1);
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
     this->writeData(0x00);

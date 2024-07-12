@@ -70,6 +70,7 @@ public:
 	void setCursor(uint16_t x, uint16_t y); // Set cursor to given position
 	void writeColor(COLOR color, uint32_t n); // Write given colors n times
 	void writeBuffer(COLOR *buffer, uint32_t n); // Write buffer to screen
+	void setPixel(uint16_t x, uint16_t y, COLOR color); // Set cursor to given position and write color
 
 private:
 	void reset(); // Hardware reset
