@@ -1,7 +1,7 @@
 /*
 ILI9486.h
-Class ILI9486 represent display with integrated SD card reader
-on ILI9486 driver used with Arduino board.
+Class ILI9486 represent display with
+ILI9486 driver used with Arduino board.
 
 Copyright (C) 2024 Mateusz Bogusławski, E: mateusz.boguslawski@ibnet.pl
 
@@ -33,7 +33,6 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #define LCD_RST 8
 #define LCD_DC 7
 #define TP_CS 4
-#define SD_CS 5
 
 // Dimensions of LCD panel in pixels
 #define LONG_SIDE 480

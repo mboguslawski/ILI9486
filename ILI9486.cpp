@@ -31,19 +31,12 @@ ILI9486::ILI9486(Orientation orientation, COLOR background):
     pinMode(LCD_RST, OUTPUT);
     pinMode(LCD_DC, OUTPUT);
     pinMode(TP_CS, OUTPUT);
-	pinMode(SD_CS, OUTPUT);
 
 	// Is safe to call as SPI library has protection for calling begin() method multiple times
 	SPI.setDataMode(SPI_MODE0);
     SPI.setBitOrder(MSBFIRST);
     SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPI.begin();
-
-	// Initialize SD card
-	digitalWrite(SD_CS, 1);
-	digitalWrite(LCD_CS, 1);
-	digitalWrite(TP_CS, 1);
-	SD.begin(SD_CS);
 
 	this->reset();
 	this->turnOffBacklight();
