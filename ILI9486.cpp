@@ -21,7 +21,10 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 #include "ILI9486.h"
 
-ILI9486::ILI9486(Orientation orientation) {
+ILI9486::ILI9486(Orientation orientation, COLOR background):
+        defaultBacklight(UINT8_MAX),
+    background(background)
+{
 	// Configure Arduino pins needed for communication
     pinMode(LCD_CS, OUTPUT);
 	pinMode(LCD_BL, OUTPUT),
@@ -44,7 +47,6 @@ ILI9486::ILI9486(Orientation orientation) {
 
 	this->reset();
 	this->turnOffBacklight();
-    this->defaultBacklight = UINT8_MAX; // Max brightness
     this->initializeRegisters();
 
     this->setScanOrder(orientation);
@@ -55,6 +57,8 @@ ILI9486::ILI9486(Orientation orientation) {
 
     // Turn on the LCD display
     this->writeRegister(0x29);
+    this->clear();
+    this->setDefaultBacklight();
 }
 
 void ILI9486::setBacklight(uint8_t value) {
@@ -73,6 +77,10 @@ void ILI9486::turnOffBacklight() {
     this->setBacklight(0);
 }
 
+void ILI9486::changeBackground(COLOR color) {
+    this->background = color;
+}
+
 void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color) {
     uint32_t size = (uint32_t)(xEnd - xStart) * (uint32_t)(yEnd - yStart);
 
@@ -82,6 +90,10 @@ void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEn
 
 void ILI9486::clear(COLOR color) {
     fill(0, 0, this->width, this->height, color);
+}
+
+void ILI9486::clear() {
+    clear(this->background);
 }
 
 void ILI9486::openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd) {
