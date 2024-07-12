@@ -103,8 +103,7 @@ void ILI9486::writeColor(COLOR color, uint32_t n) {
     digitalWrite(LCD_CS, 0);
 
     for (uint32_t i = 0; i < n; i++) {
-        SPI.transfer(color >> 8);
-        SPI.transfer(color & 0xFF);
+        SPI.transfer16(color);
     }
 
     digitalWrite(LCD_CS, 1);
@@ -115,8 +114,7 @@ void ILI9486::writeBuffer(COLOR *buffer, uint32_t n) {
     digitalWrite(LCD_CS, 0);
 
     for (uint32_t i = 0; i < n; i++) {
-        SPI.transfer(buffer[i] >> 8);
-        SPI.transfer(buffer[i] & 0xFF);
+        SPI.transfer16(buffer[i]);
     }
 
     digitalWrite(LCD_CS, 1);
@@ -246,8 +244,7 @@ void ILI9486::writeRegister(uint8_t reg) {
 void ILI9486::writeData(uint8_t data) {
 	digitalWrite(LCD_DC, 1);
 	digitalWrite(LCD_CS, 0);
-	SPI.transfer(data >> 8);
-	SPI.transfer(data & 0xFF);
+	SPI.transfer16(data);
 	digitalWrite(LCD_CS, 1);
 }
 
