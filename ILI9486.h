@@ -69,6 +69,7 @@ public:
 	void openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd); // Set display area
 	void setCursor(uint16_t x, uint16_t y); // Set cursor to given position
 	void writeColor(COLOR color, uint32_t n); // Write given colors n times
+	void writeBuffer(COLOR *buffer, uint32_t n); // Write buffer to screen
 
 private:
 	void reset(); // Hardware reset

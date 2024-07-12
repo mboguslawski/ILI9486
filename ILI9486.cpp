@@ -110,6 +110,18 @@ void ILI9486::writeColor(COLOR color, uint32_t n) {
     digitalWrite(LCD_CS, 1);
 }
 
+void ILI9486::writeBuffer(COLOR *buffer, uint32_t n) {
+    digitalWrite(LCD_DC, 1);
+    digitalWrite(LCD_CS, 0);
+
+    for (uint32_t i = 0; i < n; i++) {
+        SPI.transfer(buffer[i] >> 8);
+        SPI.transfer(buffer[i] & 0xFF);
+    }
+
+    digitalWrite(LCD_CS, 1);
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
     this->writeData(0x00);
