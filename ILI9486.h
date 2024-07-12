@@ -43,8 +43,8 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #define SHORT_SIDE 320
 
 #define COLOR uint16_t
-#define BLACK 0x000000
-#define WHITE 0xFFFFFF
+#define BLACK 0x0000
+#define WHITE 0xFFFF
 
 class ILI9486 {
 public:
