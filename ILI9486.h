@@ -46,7 +46,7 @@ public:
 	
 	// Order in which GRAM is scanned
 	enum Orientation {
-		L2R_U2D,	// The display interface is displayed left to right, up to down
+		L2R_U2D, // The display interface is displayed left to right, up to down
 		L2R_D2U,
 		R2L_U2D,
 		R2L_D2U,
@@ -57,6 +57,9 @@ public:
 	};
 	
 	ILI9486(Orientation orientation, COLOR background = BLACK); // ILI9486 driver initialization, takes about 1 second to execute
+
+	uint16_t getWidth();
+	uint16_t getHeight();
 
 	void setBacklight(uint8_t value); // Set LCD backlight value, from 0(min) to 255(max)
 	void changeDefaultBacklight(uint8_t value); // Set LCD default backlight value, from 0(min) to 255(max), 255 after init
@@ -73,7 +76,7 @@ public:
 	
 	void writeColor(COLOR color, uint32_t n); // Write given colors n times
 	void writeBuffer(COLOR *buffer, uint32_t n); // Write buffer to screen
-	void setPixel(uint16_t x, uint16_t y, COLOR color); // Set cursor to given position and write color
+	void setPixel(uint16_t x, uint16_t y, COLOR color); // Set cursor to given position and write color, slow due to setting cursor every pixel
 
 private:
 	void reset(); // Hardware reset

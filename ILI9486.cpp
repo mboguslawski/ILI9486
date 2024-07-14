@@ -53,6 +53,14 @@ ILI9486::ILI9486(Orientation orientation, COLOR background):
     this->setDefaultBacklight();
 }
 
+uint16_t ILI9486::getHeight() {
+    return this->height;
+}
+
+uint16_t ILI9486::getWidth() {
+    return this->width();
+}
+
 void ILI9486::setBacklight(uint8_t value) {
 	analogWrite(LCD_BL, value);
 }
