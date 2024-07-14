@@ -32,7 +32,6 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #define LCD_BL 9
 #define LCD_RST 8
 #define LCD_DC 7
-#define TP_CS 4
 
 // Dimensions of LCD panel in pixels
 #define LONG_SIDE 480
