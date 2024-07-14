@@ -58,7 +58,7 @@ uint16_t ILI9486::getHeight() {
 }
 
 uint16_t ILI9486::getWidth() {
-    return this->width();
+    return this->width;
 }
 
 void ILI9486::setBacklight(uint8_t value) {
