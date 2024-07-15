@@ -79,7 +79,9 @@ public:
 	void setPixel(uint16_t x, uint16_t y, COLOR color); // Set cursor to given position and write color, slow due to setting cursor every pixel
 
 	void drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, bool filled = false); // Draw circle with center at (x, y) using Bresenham's Circle Algorithm
-
+	void drawHLine(uint16_t x, uint16_t y, uint16_t len, COLOR color); // Draw horizontal line starting at point (x, y), incrementing x coordinate
+	void drawVLine(uint16_t x, uint16_t y, uint16_t len, COLOR color); // Draw vertical line starting at point (x, y), incrementing y coordinate
+	
 private:
 	void reset(); // Hardware reset
 	void initializeRegisters(); // Write inital values to registers

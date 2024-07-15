@@ -202,6 +202,14 @@ void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, b
     }
 }
 
+void ILI9486::drawHLine(uint16_t x, uint16_t y, uint16_t len, COLOR color) {
+    this->fill(x, y, x + len, y + 1, color);
+}
+
+void ILI9486::drawVLine(uint16_t x, uint16_t y, uint16_t len, COLOR color) {
+    this->fill(x, y, x + 1, y + len, color);
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
     this->writeData(0x00);
