@@ -27,15 +27,11 @@ If you wish to change any of above pins, modify defines in ILI9486.h file.
 
 Connect SPI pins from arduino to according pins in LCD
 See: https://www.arduino.cc/reference/en/language/functions/communication/spi/
-
+*/
 
 #include "ILI9486.h"
 
 void setup() {
-	constexpr ILI9486_COLOR red = 0xF000;
-	constexpr ILI9486_COLOR green = 0x0F00;
-	constexpr ILI9486_COLOR blue = 0x00F0;
-
 	// Orientation can be easily changed, see Orientation enum in ILI9486 class
 	ILI9486 display(ILI9486::L2R_U2D);
 
@@ -43,10 +39,10 @@ void setup() {
 	display.setDefaultBacklight();
 
 	// Clear screen, and fill with blue color
-	display.clear(blue);
+	display.clear(ILI9486_BLUE);
 
 	// Draw red square
-	display.fill(10, 10, 100, 100, red);
+	display.fill(10, 10, 100, 100, ILI9486_RED);
 
 	// Draw red green black square
 	display.openWindow(150, 150, 300, 300);
@@ -54,10 +50,10 @@ void setup() {
 	for (uint16_t i = 0; i < a; i++) {
 		switch(i % 3) {
 		case 0: 
-			display.writeColor(red, a);
+			display.writeColor(ILI9486_RED, a);
 			break;
 		case 1:
-			display.writeColor(green, a);
+			display.writeColor(ILI9486_GREEN, a);
 			break;
 		case 2:
 			display.writeColor(ILI9486_BLACK, a);
@@ -78,4 +74,3 @@ void setup() {
 void loop() {
 
 }
-*/
