@@ -69,6 +69,10 @@ void setup() {
 	for (int i = 0; i < 320; i++) {
 		display.setPixel(i, i, WHITE);
 	}
+
+	// Draw circles
+	display.drawCircle(50, 200, 49, WHITE, true);
+	display.drawCircle(50, 200, 20, BLACK);
 }
 
 void loop() {
