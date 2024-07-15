@@ -28,18 +28,18 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 // Below configuration can be adjusted according to wiring
 // Note that LCD_BL pin on Arduino must be capable of generating PWM output
-#define LCD_CS 10
-#define LCD_BL 9
-#define LCD_RST 8
-#define LCD_DC 7
+#define ILI9486_CS 10
+#define ILI9486_BL 9
+#define ILI9486_RST 8
+#define ILI9486_DC 7
 
 // Dimensions of LCD panel in pixels
-#define LONG_SIDE 480
-#define SHORT_SIDE 320
+#define ILI9486_LONG_SIDE 480
+#define ILI9486_SHORT_SIDE 320
 
-#define COLOR uint16_t
-#define BLACK 0x0000
-#define WHITE 0xFFFF
+#define ILI9486_COLOR uint16_t
+#define ILI9486_BLACK 0x0000
+#define ILI9486_WHITE 0xFFFF
 
 class ILI9486 {
 public:
@@ -56,7 +56,7 @@ public:
 		D2U_R2L
 	};
 	
-	ILI9486(Orientation orientation, COLOR background = BLACK); // ILI9486 driver initialization, takes about 1 second to execute
+	ILI9486(Orientation orientation, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
 
 	uint16_t getWidth();
 	uint16_t getHeight();
@@ -66,21 +66,21 @@ public:
 	void setDefaultBacklight(); // Set LCD brightness to default value
 	void turnOffBacklight(); // Set LCD panel brightness to 0
 
-	void changeBackground(COLOR color); // Change default color to display on clear screen
+	void changeBackground(ILI9486_COLOR color); // Change default color to display on clear screen
 
-	void fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color); // Fill area with given color
-	void clear(COLOR color); // Fill entire screen with given color
+	void fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color); // Fill area with given color
+	void clear(ILI9486_COLOR color); // Fill entire screen with given color
 	void clear(); // Fill entire screen with background color
 	void openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd); // Set display area
 	void setCursor(uint16_t x, uint16_t y); // Set cursor to given position
 	
-	void writeColor(COLOR color, uint32_t n); // Write given colors n times
-	void writeBuffer(COLOR *buffer, uint32_t n); // Write buffer to screen
-	void setPixel(uint16_t x, uint16_t y, COLOR color); // Set cursor to given position and write color, slow due to setting cursor every pixel
+	void writeColor(ILI9486_COLOR color, uint32_t n); // Write given colors n times
+	void writeBuffer(ILI9486_COLOR *buffer, uint32_t n); // Write buffer to screen
+	void setPixel(uint16_t x, uint16_t y, ILI9486_COLOR color); // Set cursor to given position and write color, slow due to setting cursor every pixel
 
-	void drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, bool filled = false); // Draw circle with center at (x, y) using Bresenham's Circle Algorithm
-	void drawHLine(uint16_t x, uint16_t y, uint16_t len, COLOR color); // Draw horizontal line starting at point (x, y), incrementing x coordinate
-	void drawVLine(uint16_t x, uint16_t y, uint16_t len, COLOR color); // Draw vertical line starting at point (x, y), incrementing y coordinate
+	void drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR color, bool filled = false); // Draw circle with center at (x, y) using Bresenham's Circle Algorithm
+	void drawHLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color); // Draw horizontal line starting at point (x, y), incrementing x coordinate
+	void drawVLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color); // Draw vertical line starting at point (x, y), incrementing y coordinate
 	
 private:
 	void reset(); // Hardware reset
@@ -92,5 +92,5 @@ private:
 	uint8_t defaultBacklight; // LCD panel default brightness, 0 for turned off, 255 for maximum brightness
 	uint16_t width; // [px]
 	uint16_t height; // [px]
-	COLOR background; // Default color to display on clear screen
+	ILI9486_COLOR background; // Default color to display on clear screen
 };

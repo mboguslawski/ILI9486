@@ -32,9 +32,9 @@ See: https://www.arduino.cc/reference/en/language/functions/communication/spi/
 #include "ILI9486.h"
 
 void setup() {
-	constexpr COLOR red = 0xF000;
-	constexpr COLOR green = 0x0F00;
-	constexpr COLOR blue = 0x00F0;
+	constexpr ILI9486_COLOR red = 0xF000;
+	constexpr ILI9486_COLOR green = 0x0F00;
+	constexpr ILI9486_COLOR blue = 0x00F0;
 
 	// Orientation can be easily changed, see Orientation enum in ILI9486 class
 	ILI9486 display(ILI9486::L2R_U2D);
@@ -60,19 +60,19 @@ void setup() {
 			display.writeColor(green, a);
 			break;
 		case 2:
-			display.writeColor(BLACK, a);
+			display.writeColor(ILI9486_BLACK, a);
 			break;
 		}
 	}
 
 	// Draw line
 	for (int i = 0; i < 320; i++) {
-		display.setPixel(i, i, WHITE);
+		display.setPixel(i, i, ILI9486_WHITE);
 	}
 
 	// Draw circles
-	display.drawCircle(50, 200, 49, WHITE, true);
-	display.drawCircle(50, 200, 20, BLACK);
+	display.drawCircle(50, 200, 49, ILI9486_WHITE, true);
+	display.drawCircle(50, 200, 20, ILI9486_BLACK);
 }
 
 void loop() {

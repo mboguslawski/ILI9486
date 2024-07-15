@@ -21,15 +21,15 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 #include "ILI9486.h"
 
-ILI9486::ILI9486(Orientation orientation, COLOR background):
-        defaultBacklight(UINT8_MAX),
+ILI9486::ILI9486(Orientation orientation, ILI9486_COLOR background):
+    defaultBacklight(UINT8_MAX),
     background(background)
 {
 	// Configure Arduino pins needed for communication
-    pinMode(LCD_CS, OUTPUT);
-	pinMode(LCD_BL, OUTPUT),
-    pinMode(LCD_RST, OUTPUT);
-    pinMode(LCD_DC, OUTPUT);
+    pinMode(ILI9486_CS, OUTPUT);
+	pinMode(ILI9486_BL, OUTPUT),
+    pinMode(ILI9486_RST, OUTPUT);
+    pinMode(ILI9486_DC, OUTPUT);
 
 	// Initialize SPI communication
     SPI.begin();
@@ -59,7 +59,7 @@ uint16_t ILI9486::getWidth() {
 }
 
 void ILI9486::setBacklight(uint8_t value) {
-	analogWrite(LCD_BL, value);
+	analogWrite(ILI9486_BL, value);
 }
 
 void ILI9486::changeDefaultBacklight(uint8_t value) {
@@ -74,18 +74,18 @@ void ILI9486::turnOffBacklight() {
     this->setBacklight(0);
 }
 
-void ILI9486::changeBackground(COLOR color) {
+void ILI9486::changeBackground(ILI9486_COLOR color) {
     this->background = color;
 }
 
-void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, COLOR color) {
+void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color) {
     uint32_t size = (uint32_t)(xEnd - xStart) * (uint32_t)(yEnd - yStart);
 
     this->openWindow(xStart, yStart, xEnd, yEnd);
     this->writeColor(color, size);
 }
 
-void ILI9486::clear(COLOR color) {
+void ILI9486::clear(ILI9486_COLOR color) {
     fill(0, 0, this->width, this->height, color);
 }
 
@@ -127,34 +127,34 @@ void ILI9486::setCursor(uint16_t x, uint16_t y) {
     this->openWindow(x, y, x, y);
 }
 
-void ILI9486::writeColor(COLOR color, uint32_t n) {
-    digitalWrite(LCD_DC, 1);
-    digitalWrite(LCD_CS, 0);
+void ILI9486::writeColor(ILI9486_COLOR color, uint32_t n) {
+    digitalWrite(ILI9486_DC, 1);
+    digitalWrite(ILI9486_CS, 0);
 
     for (uint32_t i = 0; i < n; i++) {
         SPI.transfer16(color);
     }
 
-    digitalWrite(LCD_CS, 1);
+    digitalWrite(ILI9486_CS, 1);
 }
 
-void ILI9486::writeBuffer(COLOR *buffer, uint32_t n) {
-    digitalWrite(LCD_DC, 1);
-    digitalWrite(LCD_CS, 0);
+void ILI9486::writeBuffer(ILI9486_COLOR *buffer, uint32_t n) {
+    digitalWrite(ILI9486_DC, 1);
+    digitalWrite(ILI9486_CS, 0);
 
     for (uint32_t i = 0; i < n; i++) {
         SPI.transfer16(buffer[i]);
     }
 
-    digitalWrite(LCD_CS, 1);
+    digitalWrite(ILI9486_CS, 1);
 }
 
-void ILI9486::setPixel(uint16_t x, uint16_t y, COLOR color) {
+void ILI9486::setPixel(uint16_t x, uint16_t y, ILI9486_COLOR color) {
     this->setCursor(x, y);
     this->writeColor(color, 1);
 }
 
-void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, bool filled) {
+void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR color, bool filled) {
     // Bresenham's Circle Algorithm
     int32_t r = (uint32_t)radius;
     int32_t p = 0;
@@ -202,11 +202,11 @@ void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, b
     }
 }
 
-void ILI9486::drawHLine(uint16_t x, uint16_t y, uint16_t len, COLOR color) {
+void ILI9486::drawHLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color) {
     this->fill(x, y, x + len, y + 1, color);
 }
 
-void ILI9486::drawVLine(uint16_t x, uint16_t y, uint16_t len, COLOR color) {
+void ILI9486::drawVLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color) {
     this->fill(x, y, x + 1, y + len, color);
 }
 
@@ -316,26 +316,26 @@ void ILI9486::initializeRegisters() {
 }
 
 void ILI9486::reset() {
-	digitalWrite(LCD_RST, 1);
+	digitalWrite(ILI9486_RST, 1);
     delay(100);
-    digitalWrite(LCD_RST, 0);
+    digitalWrite(ILI9486_RST, 0);
     delay(100);
-    digitalWrite(LCD_RST, 1);
+    digitalWrite(ILI9486_RST, 1);
     delay(100);
 }
 
 void ILI9486::writeRegister(uint8_t reg) {
-	digitalWrite(LCD_DC, 0);
-    digitalWrite(LCD_CS, 0);
+	digitalWrite(ILI9486_DC, 0);
+    digitalWrite(ILI9486_CS, 0);
     SPI.transfer(reg);
-    digitalWrite(LCD_CS, 1);
+    digitalWrite(ILI9486_CS, 1);
 }
 
 void ILI9486::writeData(uint8_t data) {
-	digitalWrite(LCD_DC, 1);
-	digitalWrite(LCD_CS, 0);
+	digitalWrite(ILI9486_DC, 1);
+	digitalWrite(ILI9486_CS, 0);
 	SPI.transfer16(data);
-	digitalWrite(LCD_CS, 1);
+	digitalWrite(ILI9486_CS, 1);
 }
 
 void ILI9486::setScanOrder(Orientation orientation) {
@@ -380,11 +380,11 @@ void ILI9486::setScanOrder(Orientation orientation) {
 
     // Get GRAM and LCD width and height
     if (orientation == L2R_U2D || orientation == L2R_D2U || orientation == R2L_U2D || orientation == R2L_D2U) {
-        this->width = SHORT_SIDE;
-        this->height = LONG_SIDE;
+        this->width = ILI9486_SHORT_SIDE;
+        this->height = ILI9486_LONG_SIDE;
     } else {
-        this->width = LONG_SIDE;
-        this->height = SHORT_SIDE;
+        this->width = ILI9486_LONG_SIDE;
+        this->height = ILI9486_SHORT_SIDE;
     }
 
     // Set the read / write scan direction of the frame memory
