@@ -78,6 +78,8 @@ public:
 	void writeBuffer(COLOR *buffer, uint32_t n); // Write buffer to screen
 	void setPixel(uint16_t x, uint16_t y, COLOR color); // Set cursor to given position and write color, slow due to setting cursor every pixel
 
+	void drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, bool filled = false); // Draw circle with center at (x, y) using Bresenham's Circle Algorithm
+
 private:
 	void reset(); // Hardware reset
 	void initializeRegisters(); // Write inital values to registers

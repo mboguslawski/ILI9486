@@ -154,6 +154,54 @@ void ILI9486::setPixel(uint16_t x, uint16_t y, COLOR color) {
     this->writeColor(color, 1);
 }
 
+void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, COLOR color, bool filled) {
+    // Bresenham's Circle Algorithm
+    int32_t r = (uint32_t)radius;
+    int32_t p = 0;
+    int32_t q = r; 
+    int32_t d = 3 - (2*r);
+    int32_t x0 = (int32_t)x;
+    int32_t y0 = (int32_t)y;
+
+    while (p <= q) {
+        if (d <= 0) {
+            d = d + (4*p) + 6;
+            p++;
+        } else {
+            q--;
+            d = d + 4*(p - q) + 10;
+            p++;
+        }
+
+        if (!filled) { 
+            this->setPixel(x0 + p, y0 + q, color);
+            this->setPixel(x0 - p, y0 + q, color);
+            this->setPixel(x0 + p, y0 - q, color);
+            this->setPixel(x0 - p, y0 - q, color);
+            this->setPixel(x0 - q, y0 + p, color);
+            this->setPixel(x0 + q, y0 + p, color);
+            this->setPixel(x0 - q, y0 - p, color);
+            this->setPixel(x0 + q, y0 - p, color);
+        } else {
+            this->fill(x0 - p, y0 + q,x0 + p, y0 + q + 1, color);
+            this->fill (x0 - p, y0 - q, x0 + p, y0 - q + 1, color);
+            this->fill(x0 - q, y0 + p, x0 + q, y0 + p + 1, color);
+            this->fill(x0 - q, y0 - p, x0 + q, y0 - p + 1, color);
+        }
+    }
+    
+    // Add 4 missing points
+    if (!filled) {
+        this->setPixel(x0, y0 + r, color);
+        this->setPixel(x0, y0 - r, color);
+        this->setPixel(x0 + r, y0, color);
+        this->setPixel(x0 - r, y0, color);
+    } else {
+        this->fill(x0, y0 - r, x0 + 1, y0 + r, color);
+        this->fill(x0 - r, y0, x0 + r, y0 + 1, color);
+    }
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
     this->writeData(0x00);
