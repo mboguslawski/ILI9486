@@ -40,6 +40,9 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #define ILI9486_COLOR uint16_t
 #define ILI9486_BLACK 0x0000
 #define ILI9486_WHITE 0xFFFF
+#define ILI9486_RED 0xF000
+#define ILI9486_GREEN 0x0F00
+#define ILI9486_BLUE 0x00F0
 
 class ILI9486 {
 public:

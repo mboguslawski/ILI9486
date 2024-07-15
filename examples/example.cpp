@@ -27,7 +27,7 @@ If you wish to change any of above pins, modify defines in ILI9486.h file.
 
 Connect SPI pins from arduino to according pins in LCD
 See: https://www.arduino.cc/reference/en/language/functions/communication/spi/
-*/
+
 
 #include "ILI9486.h"
 
@@ -78,3 +78,4 @@ void setup() {
 void loop() {
 
 }
+*/
