@@ -31,10 +31,7 @@ ILI9486::ILI9486(Orientation orientation, COLOR background):
     pinMode(LCD_RST, OUTPUT);
     pinMode(LCD_DC, OUTPUT);
 
-	// Is safe to call as SPI library has protection for calling begin() method multiple times
-	SPI.setDataMode(SPI_MODE0);
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+	// Initialize SPI communication
     SPI.begin();
 
 	this->reset();
