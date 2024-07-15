@@ -188,10 +188,10 @@ void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR 
 			this->setPixel(x0 - q, y0 - p, color);
 			this->setPixel(x0 + q, y0 - p, color);
 		} else {
-			this->fill(x0 - p, y0 + q,x0 + p, y0 + q + 1, color);
-			this->fill (x0 - p, y0 - q, x0 + p, y0 - q + 1, color);
-			this->fill(x0 - q, y0 + p, x0 + q, y0 + p + 1, color);
-			this->fill(x0 - q, y0 - p, x0 + q, y0 - p + 1, color);
+			this->drawHLine(x0 - p, y0 + q, 2*p, color);
+			this->drawHLine(x0 - p, y0 - q, 2*p, color);
+			this->drawHLine(x0 - q, y0 + p, 2*q, color);
+			this->drawHLine(x0 - q, y0 - p, 2*q, color);
 		}
 	}
 	
@@ -202,8 +202,8 @@ void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR 
 		this->setPixel(x0 + r, y0, color);
 		this->setPixel(x0 - r, y0, color);
 	} else {
-		this->fill(x0, y0 - r, x0 + 1, y0 + r, color);
-		this->fill(x0 - r, y0, x0 + r, y0 + 1, color);
+		this->drawVLine(x0, y0 - r, 2*r, color);
+		this->drawHLine(x0 - r, y0, 2*r, color);
 	}
 }
 
