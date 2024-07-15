@@ -84,6 +84,7 @@ public:
 	void drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR color, bool filled = false); // Draw circle with center at (x, y) using Bresenham's Circle Algorithm
 	void drawHLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color); // Draw horizontal line starting at point (x, y), incrementing x coordinate
 	void drawVLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color); // Draw vertical line starting at point (x, y), incrementing y coordinate
+	void drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color); // Draw line from start to edn using Bresenham's Line Algorithm
 	
 private:
 	void reset(); // Hardware reset

@@ -210,6 +210,39 @@ void ILI9486::drawVLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR colo
     this->fill(x, y, x + 1, y + len, color);
 }
 
+void ILI9486::drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color) {
+    int32_t dx = abs((int32_t)xEnd - (int32_t)xStart);
+    int32_t dy = -1 * abs((int32_t)yEnd - (int32_t)yStart);
+
+    int32_t sx = (xEnd > xStart) ? 1 : -1;
+    int32_t sy = (yEnd > yStart) ? 1 : -1;
+
+    int32_t error = dx + dy;
+    
+    int32_t x0 = (int32_t)xStart;
+    int32_t y0 = (int32_t)yStart;
+
+    while ( (x0 != xEnd) || (y0 != yEnd) ) {
+        this->setPixel(x0, y0, color);
+
+        int32_t e2 = error * 2;
+
+        if (e2 >= dy) {
+            if (x0 == xEnd) { break; }
+
+            error += dy;
+            x0 += sx;
+        } 
+        
+        if (e2 <= dx) {
+            if (y0 == yEnd) { break; }
+
+            error += dx;
+            y0 += sy;
+        }
+    }
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
     this->writeData(0x00);
