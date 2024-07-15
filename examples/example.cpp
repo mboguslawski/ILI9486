@@ -61,10 +61,11 @@ void setup() {
 		}
 	}
 
-	// Draw line
-	for (int i = 0; i < 320; i++) {
-		display.setPixel(i, i, ILI9486_WHITE);
-	}
+	// Draw lines
+	display.drawLine(0, 0, display.getWidth(), display.getWidth(), ILI9486_WHITE);
+	display.drawHLine(0, 10, display.getWidth(), ILI9486_WHITE);
+	display.drawVLine(10, 0, display.getHeight(), ILI9486_WHITE);
+
 
 	// Draw circles
 	display.drawCircle(50, 200, 49, ILI9486_WHITE, true);
