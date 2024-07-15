@@ -79,8 +79,10 @@ void ILI9486::changeBackground(ILI9486_COLOR color) {
 }
 
 void ILI9486::fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color) {
+	// Number of pixels inside rectangle
 	uint32_t size = (uint32_t)(xEnd - xStart) * (uint32_t)(yEnd - yStart);
 
+	// Set display area and write color
 	this->openWindow(xStart, yStart, xEnd, yEnd);
 	this->writeColor(color, size);
 }
@@ -100,6 +102,7 @@ void ILI9486::openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16
 		xStart = xEnd;
 		xEnd = tmp;
 	}
+
 	if (yStart > yEnd) {
 		uint16_t tmp = yStart;
 		yStart = yEnd;
@@ -156,6 +159,7 @@ void ILI9486::setPixel(uint16_t x, uint16_t y, ILI9486_COLOR color) {
 
 void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR color, bool filled) {
 	// Bresenham's Circle Algorithm
+	// See: https://www.javatpoint.com/computer-graphics-bresenhams-circle-algorithm
 	int32_t r = (uint32_t)radius;
 	int32_t p = 0;
 	int32_t q = r; 
@@ -173,7 +177,8 @@ void ILI9486::drawCircle(uint16_t x, uint16_t y, uint16_t radius, ILI9486_COLOR 
 			p++;
 		}
 
-		if (!filled) { 
+		if (!filled) {
+			// Use 8 point symmetry 
 			this->setPixel(x0 + p, y0 + q, color);
 			this->setPixel(x0 - p, y0 + q, color);
 			this->setPixel(x0 + p, y0 - q, color);
@@ -211,6 +216,8 @@ void ILI9486::drawVLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR colo
 }
 
 void ILI9486::drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color) {
+	// Bresenham's Line Algorithm
+	// See: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 	int32_t dx = abs((int32_t)xEnd - (int32_t)xStart);
 	int32_t dy = -1 * abs((int32_t)yEnd - (int32_t)yStart);
 

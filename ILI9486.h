@@ -37,6 +37,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #define ILI9486_LONG_SIDE 480
 #define ILI9486_SHORT_SIDE 320
 
+// Color is in 4 digit hex format
 #define ILI9486_COLOR uint16_t
 #define ILI9486_BLACK 0x0000
 #define ILI9486_WHITE 0xFFFF
@@ -46,7 +47,6 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 class ILI9486 {
 public:
-	
 	// Order in which GRAM is scanned
 	enum Orientation {
 		L2R_U2D, // The display interface is displayed left to right, up to down
@@ -74,7 +74,7 @@ public:
 	void fill(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color); // Fill area with given color
 	void clear(ILI9486_COLOR color); // Fill entire screen with given color
 	void clear(); // Fill entire screen with background color
-	void openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd); // Set display area
+	void openWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd); // Set display area, do not use for drawing lines
 	void setCursor(uint16_t x, uint16_t y); // Set cursor to given position
 	
 	void writeColor(ILI9486_COLOR color, uint32_t n); // Write given colors n times
@@ -87,7 +87,7 @@ public:
 	void drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color); // Draw line from start to edn using Bresenham's Line Algorithm
 	
 private:
-	void reset(); // Hardware reset
+	void reset(); // Hardware reset, takes about 300ms to complete
 	void initializeRegisters(); // Write inital values to registers
 	void writeRegister(uint8_t reg); // Write register address  
 	void writeData(uint8_t data); // Write data to register
