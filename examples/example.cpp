@@ -32,7 +32,7 @@ See: https://www.arduino.cc/reference/en/language/functions/communication/spi/
 ---
 
 Expected behaviour:
-Four lines, two squares and circle with smaller circles inside should be visible on screen.
+Lines, squares, circle with smaller circles inside and text should be visible on screen.
 Screen should go smoothly from maximum brightness to minimum brightness and back again in indefinite loop.
 */
 
@@ -42,7 +42,7 @@ ILI9486 *display;
 
 void setup() {
 	// Orientation can be easily changed, see Orientation enum in ILI9486 class
-	display = new ILI9486(ILI9486::L2R_U2D);
+	display = new ILI9486(ILI9486::R2L_U2D);
 
 	// Turn on backlight
 	display->setDefaultBacklight();
@@ -54,8 +54,8 @@ void setup() {
 	display->fill(10, 10, 100, 100, ILI9486_RED);
 
 	// Draw red green black square
-	display->openWindow(150, 150, 300, 300);
-	constexpr uint16_t a = (300 - 150);
+	display->openWindow(150, 100, 300, 250);
+	constexpr uint16_t a = 150;
 	for (uint16_t i = 0; i < a; i++) {
 		switch(i % 3) {
 		case 0: 
@@ -74,18 +74,16 @@ void setup() {
 	display->drawLine(0, 0, display->getWidth(), display->getWidth(), ILI9486_WHITE);
 	display->drawHLine(0, 10, display->getWidth(), ILI9486_WHITE);
 	display->drawVLine(10, 0, display->getHeight(), ILI9486_WHITE);
-	display->drawLine(display->getWidth(), 10, 10, display->getHeight(), ILI9486_WHITE);
 
 
 	// Draw circles
 	display->drawCircle(70, 225, 49, ILI9486_WHITE, true);
 	display->drawCircle(70, 225, 20, ILI9486_BLACK, true);
-	
-	// Same as
-	// display.drawCircle(70, 225, 30, ILI9486_BLACK, false);
-	display->drawCircle(70, 225, 30, ILI9486_BLACK);
-	
+	display->drawCircle(70, 225, 30, ILI9486_BLACK); // Same as display.drawCircle(70, 225, 30, ILI9486_BLACK, false);
 	display->drawCircle(70, 225, 10, ILI9486_GREEN, true);
+
+	// Text
+	display->drawString(40, 300, "ILI9486 Example", ILI9486::L, ILI9486_WHITE);
 }
 
 void loop() {
