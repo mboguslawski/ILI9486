@@ -26,6 +26,8 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 #include <SPI.h>
 #include <SD.h>
 
+#include "fonts/fonts.h"
+
 // Below configuration can be adjusted according to wiring
 // Note that LCD_BL pin on Arduino must be capable of generating PWM output
 #define ILI9486_CS 10
@@ -58,6 +60,16 @@ public:
 		D2U_L2R,
 		D2U_R2L
 	};
+
+	// Possible font sizes
+	// Font size refers to single character height
+	enum FontSize {
+		XS = 8,
+		S = 12,
+		M = 16,
+		L = 20,
+		XL = 24
+	};
 	
 	ILI9486(Orientation orientation, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
 
@@ -86,6 +98,9 @@ public:
 	void drawVLine(uint16_t x, uint16_t y, uint16_t len, ILI9486_COLOR color); // Draw vertical line starting at point (x, y), incrementing y coordinate
 	void drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color); // Draw line from start to edn using Bresenham's Line Algorithm
 	
+	void drawChar(uint16_t x, uint16_t y, uint8_t character, FontSize size, ILI9486_COLOR color); // Display character on the screen
+	void drawString(uint16_t x, uint16_t y, const uint8_t *str, FontSize size, ILI9486_COLOR color);
+
 private:
 	void reset(); // Hardware reset, takes about 300ms to complete
 	void initializeRegisters(); // Write inital values to registers

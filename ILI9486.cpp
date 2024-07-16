@@ -250,6 +250,56 @@ void ILI9486::drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t
 	}
 }
 
+void ILI9486::drawChar(uint16_t x, uint16_t y, uint8_t character, FontSize size, ILI9486_COLOR color) {
+	// Load correct font size
+	sFONT *font;
+	switch(size) {
+		case XS: font = &Font8; break;
+		case S: font = &Font12; break;
+		case M: font = &Font16; break;
+		case L: font = &Font20; break;
+		case XL: font = &Font24; break;
+	}
+	
+	// Modify position to top left corner of character
+	x -= (font->Width / 2);
+	y += (font->Height / 2);
+
+	// Calculate character position in memory
+	uint32_t pos = uint32_t(character - ' ') * font->Height;
+	// Some fonts have use more then 8 bits for one pixel line
+	pos *= ( font->Width / 8 + ((font->Width % 8) ? 1 : 0) );
+
+	for (uint16_t i = 0; i < font->Height; i++) {
+		for (uint16_t j = 0; j < font->Width; j++) {
+			// Some fonts use more than 8 bits for one pixel line
+			if ( (j % 8 == 0) && (j != 0) ) { pos++; }
+
+			// Font is saved in FLASH memory
+			if (pgm_read_byte(&font->table[pos]) & (0x80 >> (j % 8))) {
+				this->setPixel(x + j, y - i, color);
+			}
+		}
+
+		pos++;
+	}
+}
+
+void ILI9486::drawString(uint16_t x, uint16_t y, const uint8_t *str, FontSize size, ILI9486_COLOR color) {
+	for (uint16_t i = 0; str[i] != '\0'; i++) {
+		this->drawChar(x, y, str[i], size, color);
+
+		// Move x for next letter depending on font size
+		switch(size) {
+			case XS: x += Font8.Width; break;
+			case S: x += Font12.Width; break;
+			case M: x += Font16.Width; break;
+			case L: x += Font20.Width; break;
+			case XL: x += Font24.Width; break;
+		}	
+	}
+}
+
 void ILI9486::initializeRegisters() {
 	this->writeRegister(0XF9);
 	this->writeData(0x00);
