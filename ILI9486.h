@@ -101,12 +101,13 @@ public:
 	void drawChar(uint16_t x, uint16_t y, uint8_t character, FontSize size, ILI9486_COLOR color); // Display character on the screen
 	void drawString(uint16_t x, uint16_t y, const uint8_t *str, FontSize size, ILI9486_COLOR color);
 
+	void setOrientation(Orientation orientation); // Set order in which GRAM is scanned
+
 private:
 	void reset(); // Hardware reset, takes about 300ms to complete
 	void initializeRegisters(); // Write inital values to registers
 	void writeRegister(uint8_t reg); // Write register address  
 	void writeData(uint8_t data); // Write data to register
-	void setScanOrder(Orientation orientation); // Set order in which GRAM is scanned
 
 	uint8_t defaultBacklight; // LCD panel default brightness, 0 for turned off, 255 for maximum brightness
 	uint16_t width; // [px]

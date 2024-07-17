@@ -38,7 +38,7 @@ ILI9486::ILI9486(Orientation orientation, ILI9486_COLOR background):
 	this->turnOffBacklight();
 	this->initializeRegisters();
 
-	this->setScanOrder(orientation);
+	this->setOrientation(orientation);
 	delay(200);
 
 	this->writeRegister(0x11);
@@ -428,7 +428,7 @@ void ILI9486::writeData(uint8_t data) {
 	digitalWrite(ILI9486_CS, 1);
 }
 
-void ILI9486::setScanOrder(Orientation orientation) {
+void ILI9486::setOrientation(Orientation orientation) {
 	uint16_t MemoryAccessReg_Data = 0; //addr:0x36
 	uint16_t DisFunReg_Data = 0; //addr:0xB6
 
