@@ -73,8 +73,9 @@ public:
 	
 	ILI9486(Orientation orientation, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
 
-	uint16_t getWidth();
-	uint16_t getHeight();
+	uint16_t getWidth(); // In pixels
+	uint16_t getHeight(); // In pixels
+	uint32_t getSize(); // Width times height [px]
 
 	void setBacklight(uint8_t value); // Set LCD backlight value, from 0(min) to 255(max)
 	void changeDefaultBacklight(uint8_t value); // Set LCD default backlight value, from 0(min) to 255(max), 255 after init
