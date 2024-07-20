@@ -21,8 +21,8 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 #include "ILI9486.h"
 
-ILI9486::ILI9486(Orientation orientation, ILI9486_COLOR background):
-	defaultBacklight(UINT8_MAX),
+ILI9486::ILI9486(Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background):
+	defaultBacklight(defaultBacklight),
 	background(background)
 {
 	// Configure Arduino pins needed for communication

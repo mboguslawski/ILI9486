@@ -71,7 +71,7 @@ public:
 		XL = 24
 	};
 	
-	ILI9486(Orientation orientation, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
+	ILI9486(Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
 
 	uint16_t getWidth(); // In pixels
 	uint16_t getHeight(); // In pixels
