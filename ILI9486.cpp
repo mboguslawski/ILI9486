@@ -21,15 +21,19 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 #include "ILI9486.h"
 
-ILI9486::ILI9486(Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background):
+ILI9486::ILI9486(uint8_t CS, uint8_t BL, uint8_t RST, uint8_t DC, Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background):
+	CS(CS),
+	BL(BL),
+	RST(RST),
+	DC(DC),
 	defaultBacklight(defaultBacklight),
 	background(background)
 {
 	// Configure Arduino pins needed for communication
-	pinMode(ILI9486_CS, OUTPUT);
-	pinMode(ILI9486_BL, OUTPUT),
-	pinMode(ILI9486_RST, OUTPUT);
-	pinMode(ILI9486_DC, OUTPUT);
+	pinMode(this->CS, OUTPUT);
+	pinMode(this->BL, OUTPUT),
+	pinMode(this->RST, OUTPUT);
+	pinMode(this->DC, OUTPUT);
 
 	// Initialize SPI communication
 	SPI.begin();
@@ -63,7 +67,7 @@ uint32_t ILI9486::getSize() {
 }
 
 void ILI9486::setBacklight(uint8_t value) {
-	analogWrite(ILI9486_BL, value);
+	analogWrite(this->BL, value);
 }
 
 void ILI9486::changeDefaultBacklight(uint8_t value) {
@@ -135,25 +139,25 @@ void ILI9486::setCursor(uint16_t x, uint16_t y) {
 }
 
 void ILI9486::writeColor(ILI9486_COLOR color, uint32_t n) {
-	digitalWrite(ILI9486_DC, 1);
-	digitalWrite(ILI9486_CS, 0);
+	digitalWrite(this->DC, 1);
+	digitalWrite(this->CS, 0);
 
 	for (uint32_t i = 0; i < n; i++) {
 		SPI.transfer16(color);
 	}
 
-	digitalWrite(ILI9486_CS, 1);
+	digitalWrite(this->CS, 1);
 }
 
 void ILI9486::writeBuffer(ILI9486_COLOR *buffer, uint32_t n) {
-	digitalWrite(ILI9486_DC, 1);
-	digitalWrite(ILI9486_CS, 0);
+	digitalWrite(this->DC, 1);
+	digitalWrite(this->CS, 0);
 
 	for (uint32_t i = 0; i < n; i++) {
 		SPI.transfer16(buffer[i]);
 	}
 
-	digitalWrite(ILI9486_CS, 1);
+	digitalWrite(this->CS, 1);
 }
 
 void ILI9486::setPixel(uint16_t x, uint16_t y, ILI9486_COLOR color) {
@@ -410,26 +414,26 @@ void ILI9486::initializeRegisters() {
 }
 
 void ILI9486::reset() {
-	digitalWrite(ILI9486_RST, 1);
+	digitalWrite(this->RST, 1);
 	delay(100);
-	digitalWrite(ILI9486_RST, 0);
+	digitalWrite(this->RST, 0);
 	delay(100);
-	digitalWrite(ILI9486_RST, 1);
+	digitalWrite(this->RST, 1);
 	delay(100);
 }
 
 void ILI9486::writeRegister(uint8_t reg) {
-	digitalWrite(ILI9486_DC, 0);
-	digitalWrite(ILI9486_CS, 0);
+	digitalWrite(this->DC, 0);
+	digitalWrite(this->CS, 0);
 	SPI.transfer(reg);
-	digitalWrite(ILI9486_CS, 1);
+	digitalWrite(this->CS, 1);
 }
 
 void ILI9486::writeData(uint8_t data) {
-	digitalWrite(ILI9486_DC, 1);
-	digitalWrite(ILI9486_CS, 0);
+	digitalWrite(this->DC, 1);
+	digitalWrite(this->CS, 0);
 	SPI.transfer16(data);
-	digitalWrite(ILI9486_CS, 1);
+	digitalWrite(this->CS, 1);
 }
 
 void ILI9486::setOrientation(Orientation orientation) {

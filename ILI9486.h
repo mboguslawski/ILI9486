@@ -28,13 +28,6 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 
 #include "fonts/fonts.h"
 
-// Below configuration can be adjusted according to wiring
-// Note that LCD_BL pin on Arduino must be capable of generating PWM output
-#define ILI9486_CS 10
-#define ILI9486_BL 9
-#define ILI9486_RST 8
-#define ILI9486_DC 7
-
 // Dimensions of LCD panel in pixels
 #define ILI9486_LONG_SIDE 480
 #define ILI9486_SHORT_SIDE 320
@@ -71,7 +64,7 @@ public:
 		XL = 24
 	};
 	
-	ILI9486(Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
+	ILI9486(uint8_t CS, uint8_t BL, uint8_t RST, uint8_t DC, Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background = ILI9486_BLACK); // ILI9486 driver initialization, takes about 1 second to execute
 
 	uint16_t getWidth(); // In pixels
 	uint16_t getHeight(); // In pixels
@@ -109,6 +102,12 @@ private:
 	void initializeRegisters(); // Write inital values to registers
 	void writeRegister(uint8_t reg); // Write register address  
 	void writeData(uint8_t data); // Write data to register
+
+	// Arduino pin numbers
+	uint8_t CS;
+	uint8_t BL; // Pin must be configurable as PWM output
+	uint8_t RST;
+	uint8_t DC;
 
 	uint8_t defaultBacklight; // LCD panel default brightness, 0 for turned off, 255 for maximum brightness
 	uint16_t width; // [px]
