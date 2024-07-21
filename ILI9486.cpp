@@ -66,6 +66,10 @@ uint32_t ILI9486::getSize() {
 	return (uint32_t)this->getHeight() * (uint32_t)this->getWidth();
 }
 
+uint16_t ILI9486::getDefaultBacklight() {
+	return this->defaultBacklight;
+}
+
 void ILI9486::setBacklight(uint8_t value) {
 	analogWrite(this->BL, value);
 }
