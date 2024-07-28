@@ -8,9 +8,9 @@ ___
 Example showing simple usage of this this class is available in `examples/` directory.
 For further help read below documentation.
 - #### Class constructor
-> ILI9486(Orientation orientation, ILI9486_COLOR background = ILI9486_BLACK);
+> ILI9486(uint8_t CS, uint8_t BL, uint8_t RST, uint8_t DC, Orientation orientation, uint8_t defaultBacklight, ILI9486_COLOR background = ILI9486_BLACK)
 
-Takes orientation of screen and default background color, which will be displayed after initialization.
+Takes arduino pins numbers connected to ILI9486, orientation of screen and default background color, which will be displayed after initialization.
 
 Inside constructor ILI9486 driver registers are initialized with initial values and `SPI.begin()` is called to start SPI communication.
 Initializing takes about 1 second.
@@ -21,6 +21,10 @@ Initializing takes about 1 second.
 
 Note that dimensions can vary depending on screen orientation, so use above methods rather then constant values.
 
+> uint32_t getSize()
+
+Use above method to get number of pixels (width x height)
+
 - #### Setting backlight
 > void setBacklight(uint8_t value)
 
@@ -30,6 +34,10 @@ Values range from 0 to 255.
 > void turnOffBacklight()
 
 Set backlight to 0. Screen would seem to be turned off.
+
+> uint16_t getDefaultBacklight()
+
+Get current default backlight value
 
 - #### Default backlight feature
 Default backlight value can be used to return to chosen brightness for example after setting backlight to 0.
@@ -76,6 +84,11 @@ Above methods draw straight line starting from (x, y) point and incrementing x c
 > void drawLine(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t yEnd, ILI9486_COLOR color)
 
 Above method is used to draw line between any two points (might be not straight).
+
+- #### Changing orientation
+>void setOrientation(Orientation orientation)
+
+Use above method to change the order in which GRAM is scanned
 
 - #### Custom drawing on screen
 > void setPixel(uint16_t x, uint16_t y, ILI9486_COLOR color)
